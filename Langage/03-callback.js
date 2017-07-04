@@ -33,3 +33,14 @@ setTimeout(function onTimeout() {
 console.log('Après le callback asynchrone');
 // Après le callback asynchrone
 // une seconde s'est écoulée
+
+
+
+
+
+
+
+
+
+
+

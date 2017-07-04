@@ -52,8 +52,8 @@ console.log(addition(1, 2)); // 3
 try {
   console.log(addition(1, '2')); // 3
 }
-catch (e) {
-  console.log(e.message);
+catch (err) {
+  console.log(err.message);
 }
 
 // Fonction variadique

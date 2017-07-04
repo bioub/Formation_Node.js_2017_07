@@ -1,17 +1,17 @@
 // 1 - Utiliser les Method Properties
-var Random = {
-  get: function () {
+const Random = {
+  get() {
     return Math.random();
   },
-  getArbitrary: function (min, max) {
+  getArbitrary(min, max) {
     return Math.random() * (max - min) + min;
   },
-  getInt: function (min, max) {
+  getInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
   },
-  getIntInclusive: function (min, max) {
+  getIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
@@ -19,61 +19,64 @@ var Random = {
 };
 
 // 1bis - N'utiliser que let et const (de préférence const)
-var readline = require('readline');
+const readline = require('readline');
 
 // 2 - Utiliser le mot clé class
-var Jeu = function(options) {
-  // 3 - Utiliser un default params
-  options = options || {};
+class Jeu {
+  constructor(options = {}) {
+    // 3 - Utiliser un default params
+    // options = options || {};
 
-  // 4 - Destructurer options
-  var min = options.min || 0;
-  var max = (options.max !== undefined) ? options.max : 100;
-  this._rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  this._entierAlea = Random.getIntInclusive(min, max);
-  this._essais = [];
-};
-
-Jeu.prototype.jouer = function () {
-
-  if (this._essais.length) {
-    // 5 - Utiliser une template string
-    console.log('Vous avez déjà joué : ' + this._essais.join(' - '));
+    // 4 - Destructurer options
+    const {min = 0, max = 100} = options;
+    //const min = options.min || 0;
+    //const max = (options.max !== undefined) ? options.max : 100;
+    this._rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+    this._entierAlea = Random.getIntInclusive(min, max);
+    this._essais = [];
   }
 
-  this._rl.question('Saisir un nombre entier : ', (saisie) => {
+  jouer() {
 
-    // 6 - Utiliser Number.parseInt
-    // et Number.isNaN
-    var entierSaisi = parseInt(saisie);
-
-    if (isNaN(entierSaisi)) {
-      console.log('Erreur : il faut saisir un nombre');
-      return this.jouer();
-    }
-
-    this._essais.push(entierSaisi);
-
-    if (entierSaisi < this._entierAlea) {
+    if (this._essais.length) {
       // 5 - Utiliser une template string
-      console.log(entierSaisi + ' est trop petit');
-      return this.jouer();
+      console.log(`Vous avez déjà joué : ${this._essais.join(' - ')}`);
     }
 
-    if (entierSaisi > this._entierAlea) {
-      // 5 - Utiliser une template string
-      console.log(entierSaisi + ' est trop grand');
-      return this.jouer();
-    }
+    this._rl.question('Saisir un nombre entier : ', (saisie) => {
 
-    console.log('Gagné !!!');
-    this._rl.close();
-  });
+      // 6 - Utiliser Number.parseInt
+      // et Number.isNaN
+      const entierSaisi = Number.parseInt(saisie);
 
-};
+      if (Number.isNaN(entierSaisi)) {
+        console.log('Erreur : il faut saisir un nombre');
+        return this.jouer();
+      }
 
-var jeu = new Jeu();
+      this._essais.push(entierSaisi);
+
+      if (entierSaisi < this._entierAlea) {
+        // 5 - Utiliser une template string
+        console.log(`${entierSaisi} est trop petit`);
+        return this.jouer();
+      }
+
+      if (entierSaisi > this._entierAlea) {
+        // 5 - Utiliser une template string
+        console.log(`${entierSaisi} est trop grand`);
+        return this.jouer();
+      }
+
+      console.log('Gagné !!!');
+      this._rl.close();
+    });
+
+  }
+}
+
+const jeu = new Jeu();
 jeu.jouer();

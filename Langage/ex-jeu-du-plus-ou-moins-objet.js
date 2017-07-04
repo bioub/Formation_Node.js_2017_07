@@ -18,68 +18,72 @@
 // });
 // jeu.jouer();
 
+var Random = {
+  get: function () {
+    return Math.random();
+  },
+  getArbitrary: function (min, max) {
+    return Math.random() * (max - min) + min;
+  },
+  getInt: function (min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  },
+  getIntInclusive: function (min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+  },
+};
 
-function getRandom() {
-  return Math.random();
-}
 
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
+var readline = require('readline');
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
+var Jeu = function(options) {
+  options = options || {};
+  var min = options.min || 0;
+  var max = (options.max !== undefined) ? options.max : 100;
+  this._rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  this._entierAlea = Random.getIntInclusive(min, max);
+  this._essais = [];
+};
 
-function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
-}
+Jeu.prototype.jouer = function () {
 
-const readline = require('readline');
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-var entierAlea = getRandomIntInclusive(0, 100);
-var essais = [];
-
-var jouer = function() {
-
-  if (essais.length) {
-    console.log('Vous avez déjà joué : ' + essais.join(' - '));
+  if (this._essais.length) {
+    console.log('Vous avez déjà joué : ' + this._essais.join(' - '));
   }
 
-  rl.question('Saisir un nombre entier : ', (saisie) => {
+  this._rl.question('Saisir un nombre entier : ', (saisie) => {
 
     var entierSaisi = parseInt(saisie);
 
     if (isNaN(entierSaisi)) {
       console.log('Erreur : il faut saisir un nombre');
-      return jouer();
+      return this.jouer();
     }
 
-    essais.push(entierSaisi);
+    this._essais.push(entierSaisi);
 
-    if (entierSaisi < entierAlea) {
+    if (entierSaisi < this._entierAlea) {
       console.log(entierSaisi + ' est trop petit');
-      return jouer();
+      return this.jouer();
     }
 
-    if (entierSaisi > entierAlea) {
+    if (entierSaisi > this._entierAlea) {
       console.log(entierSaisi + ' est trop grand');
-      return jouer();
+      return this.jouer();
     }
 
     console.log('Gagné !!!');
-    rl.close();
+    this._rl.close();
   });
 
 };
 
-jouer();
+var jeu = new Jeu();
+jeu.jouer();

@@ -99,3 +99,20 @@ console.log(total); // 10
 // Avec les fonctions vues précédemment
 // 1 - Créer un tableaux de villes à partir de contacts
 // 2 - Dédoublonner ce tableau
+console.log('-- exercice --');
+contacts
+  .map(c => c.adresse.ville)
+  .reduce((acc, v) => {
+    if (!acc.includes(v)) {
+      acc.push(v);
+    }
+    return acc;
+  }, [])
+  .sort()
+  .forEach(ville => console.log(ville));
+
+
+
+
+
+

@@ -1,3 +1,5 @@
+'use strict';
+
 // 1 - Utiliser les Method Properties
 const Random = {
   get() {

@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "fs-extra": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.1.1"
+  },
+  "scripts": {
+    "build": "npm run lint && npm run build:ts",
+    "build:ts": "tsc",
+    "lint": "npm run lint:fix",
+    "lint:fix": "eslint . --color --fix"
+  }
+}

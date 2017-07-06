@@ -1,5 +1,5 @@
 // Avec le REST param (ES6)
-const additionRest = (...nbs) => nbs.reduce((a, b) => a + b);
+const additionRest = (...nbs) => nbs.reduce((acc, nb) => acc + nb);
 console.log(additionRest(1, 2, 3, 4)); // 10
 
 // SPREAD Operator

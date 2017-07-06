@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "@types/chai": "^4.0.1",
+    "@types/node": "^8.0.7",
+    "chai": "^4.0.2",
+    "npm-run-all": "^4.0.2",
+    "typescript": "^2.4.1"
+  },
+  "scripts": {
+    "build": "npm-run-all build:*",
+    "build:ts": "tsc"
+  }
+}

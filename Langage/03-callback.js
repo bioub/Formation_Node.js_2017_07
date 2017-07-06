@@ -11,7 +11,7 @@
 var setTimeoutSync = function(cb, delay) {
   var debut = Date.now();
 
-  while (debut + delay > Date.now()) {}
+  while (debut + delay > Date.now());
 
   cb();
 };

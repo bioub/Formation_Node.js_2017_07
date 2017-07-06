@@ -1,3 +1,18 @@
+// Le piège
+var contact = {
+  prenom: 'Romain',
+  helloAsync() {
+    setTimeout(function () {
+      // Cette fonction sera appelée dans timers.js
+      // ligne 488
+      // timer._onTimeout();
+      // donc this === timer
+      // et pas du tout contact
+      console.log(`Bonjour je m'appelle ${this.prenom}`);
+    }, 1000);
+  }
+};
+
 // En ES3
 var contact = {
   prenom: 'Romain',
@@ -5,7 +20,7 @@ var contact = {
     var that = this;
     setTimeout(function () {
       console.log(`Bonjour je m'appelle ${that.prenom}`);
-    }, 1000)
+    }, 1000);
   }
 };
 
@@ -27,7 +42,7 @@ var contact = {
   helloAsync() {
     setTimeout(function () {
       console.log(`Bonjour je m'appelle ${this.prenom}`);
-    }.bind(this), 1000)
+    }.bind(this), 1000);
   }
 };
 
@@ -39,7 +54,7 @@ var contact = {
     console.log(`Bonjour je m'appelle ${this.prenom}`);
   },
   helloAsync() {
-    setTimeout(this.hello.bind(this), 1000)
+    setTimeout(this.hello.bind(this), 1000);
   }
 };
 
@@ -51,7 +66,7 @@ var contact = {
   helloAsync() {
     setTimeout(() => {
       console.log(`Bonjour je m'appelle ${this.prenom}`);
-    }, 1000)
+    }, 1000);
   }
 };
 

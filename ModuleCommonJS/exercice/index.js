@@ -1,3 +1,4 @@
-/**
- * Created by Administrateur on 05/07/2017.
- */
+const Jeu = require('./jeu');
+
+const jeu = new Jeu();
+jeu.jouer();

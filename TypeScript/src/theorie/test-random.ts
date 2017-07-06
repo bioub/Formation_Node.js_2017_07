@@ -1,3 +1,4 @@
+import { ok as assertTrue } from 'assert';
 import { getRandom } from './random';
 
-console.log(getRandom());
+assertTrue(typeof getRandom() === 'number');

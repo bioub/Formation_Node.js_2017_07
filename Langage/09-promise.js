@@ -1,7 +1,6 @@
 const fs = require('fs');
 const util = require('util');
 
-
 /*
 const logFileSync = (filePath, msg) => {
   fs.appendFileSync(filePath, msg + '\n');
@@ -52,12 +51,31 @@ logFile('logs/app.log', Math.random(), (err) => {
 });
 */
 
+
 const appendFilePromise = util.promisify(fs.appendFile);
+/*
+const appendFilePromise = (filePath, msg) => {
+  return new Promise((resolve, reject) => {
+    fs.appendFile(filePath, msg, (err) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve();
+    });
+  });
+};
+*/
+const statPromise = util.promisify(fs.stat);
+const mkdirPromise = util.promisify(fs.mkdir);
+
 const logFilePromise = (filePath, msg) => {
   return appendFilePromise(filePath, msg + '\n');
 };
 
-logFilePromise('logs/app.log', Math.random())
+/*
+statPromise('logs')
+  .catch(() => mkdirPromise('logs'))
+  .then(() => logFilePromise('logs/app.log', Math.random()))
   .then(() => logFilePromise('logs/app.log', Math.random()))
   .then(() => logFilePromise('logs/app.log', Math.random()))
   .then(() => logFilePromise('logs/app.log', Math.random()))
@@ -65,13 +83,26 @@ logFilePromise('logs/app.log', Math.random())
   .catch((err) => {
     console.log(err.message);
   });
+*/
 
 const logs = async function() {
-  await logFilePromise('logs/app.log', Math.random());
-  await logFilePromise('logs/app.log', Math.random());
-  await logFilePromise('logs/app.log', Math.random());
-  await logFilePromise('logs/app.log', Math.random());
-  await logFilePromise('logs/app.log', Math.random());
+  try {
+    await statPromise('logs');
+  }
+  catch (err) {
+    await mkdirPromise('logs');
+  }
+  try {
+    await logFilePromise('logs/app.log', Math.random());
+    await logFilePromise('logs/app.log', Math.random());
+    await logFilePromise('logs/app.log', Math.random());
+    await logFilePromise('logs/app.log', Math.random());
+    await logFilePromise('logs/app.log', Math.random());
+  }
+  catch (err) {
+    console.log(err.message);
+  }
 };
 
 logs();
+

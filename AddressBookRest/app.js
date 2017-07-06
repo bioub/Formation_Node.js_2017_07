@@ -24,6 +24,17 @@ app.post('/api/contacts', (req, res) => {});
 // dont l'id vous a été envoyé dans l'URL
 app.get('/api/contacts/:id', (req, res) => {
     const id = req.params.id;
+
+    const contact = contacts.find(c => c.id === Number(id));
+
+    if (!contact) {
+        res.statusCode = 404;
+        return res.json({
+            msg: 'Le contact n\'existe pas',
+        });
+    }
+
+    res.json(contact);
 });
 // Replace
 app.put('/api/contacts/:id', (req, res) => {});
@@ -37,6 +48,23 @@ app.put('/api/contacts/:id', (req, res) => {});
 // 3 - Ajouter la gestion des erreurs 404
 // (si le contact n'est dans le tableau)
 
-app.delete('/api/contacts/:id', (req, res) => {});
+app.delete('/api/contacts/:id', (req, res) => {
+    const id = req.params.id;
+
+    const iToDelete = contacts.findIndex(c => c.id === Number(id));
+
+    if (iToDelete === -1) {
+        res.statusCode = 404;
+        return res.json({
+            msg: 'Le contact n\'existe pas',
+        });
+    }
+
+    const contact = contacts[iToDelete];
+
+    contacts.splice(iToDelete, 1);
+
+    res.json(contact);
+});
 
 module.exports = app;

@@ -1,5 +1,7 @@
 const Router = require('express').Router;
 const router = new Router();
+const authorize = require('../middlewares/authorize');
+const bodyParser = require('body-parser');
 
 const contacts = [{
   prenom: 'Steve',
@@ -18,7 +20,9 @@ router.get('/', (req, res) => {
 });
 
 // Add
-router.post('/', (req, res) => {});
+router.post('/', bodyParser.json(), (req, res) => {
+
+});
 
 // Show
 // 1 - Retourner en JSON, le contact du tableau
@@ -39,7 +43,7 @@ router.get('/:id', (req, res) => {
 });
 
 // Replace
-router.put('/:id', (req, res) => {});
+router.put('/:id', authorize('admin'), (req, res) => {});
 
 // Delete
 // 2 - Supprimer le contact du tableau

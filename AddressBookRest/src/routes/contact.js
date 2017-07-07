@@ -13,35 +13,35 @@ const Contact = require('../models/contact');
 
 // API Restful (URLs conventionnées)
 // List
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   Contact.find({}, 'prenom nom')
     .then((contacts) => {
       res.json(contacts);
     })
-    .catch((err) => {});
+    .catch(next);
 });
 
 // Add
-router.post('/', bodyParser.json(), (req, res) => {
-
+router.post('/', bodyParser.json(), (req, res, next) => {
+  Contact.create(req.body)
+    .then(contact => {
+      res.statusCode = 201;
+      res.json(contact);
+    })
+    .catch(next);
 });
 
 // Show
-// 1 - Retourner en JSON, le contact du tableau
-// dont l'id vous a été envoyé dans l'URL
-router.get('/:id', (req, res) => {
-  const id = req.params.id;
+router.get('/:id', (req, res, next) => {
+  Contact.findById(req.params.id)
+    .then(contact => {
+      if (!contact) {
+        return next();
+      }
 
-  const contact = contacts.find(c => c.id === Number(id));
-
-  if (!contact) {
-    res.statusCode = 404;
-    return res.json({
-      msg: 'Le contact n\'existe pas',
-    });
-  }
-
-  res.json(contact);
+      res.json(contact);
+    })
+    .catch(next);
 });
 
 // Replace
@@ -56,23 +56,16 @@ router.put('/:id', authorize('admin'), (req, res) => {});
 
 // 3 - Ajouter la gestion des erreurs 404
 // (si le contact n'est dans le tableau)
-router.delete('/:id', (req, res) => {
-  const id = req.params.id;
+router.delete('/:id', (req, res, next) => {
+  Contact.findByIdAndRemove(req.params.id)
+    .then(contact => {
+      if (!contact) {
+        return next();
+      }
 
-  const iToDelete = contacts.findIndex(c => c.id === Number(id));
-
-  if (iToDelete === -1) {
-    res.statusCode = 404;
-    return res.json({
-      msg: 'Le contact n\'existe pas',
-    });
-  }
-
-  const contact = contacts[iToDelete];
-
-  contacts.splice(iToDelete, 1);
-
-  res.json(contact);
+      res.json(contact);
+    })
+    .catch(next);
 });
 
 module.exports = router;

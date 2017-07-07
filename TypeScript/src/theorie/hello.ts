@@ -39,7 +39,7 @@ function upper(prototype: object, key: string) {
         get() {
             return _v;
         }
-    })
+    });
 }
 
 class Contact {

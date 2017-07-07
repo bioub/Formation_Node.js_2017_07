@@ -1,5 +1,15 @@
 {
   "dependencies": {
     "express": "^4.15.3"
+  },
+  "devDependencies": {
+    "eslint": "^4.1.1",
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "start:dev": "nodemon index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   }
 }

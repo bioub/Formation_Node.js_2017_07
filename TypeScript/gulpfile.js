@@ -38,4 +38,8 @@ gulp.task('build', [
     'copy',
 ]);
 
+gulp.task('watch:ts', function() {
+    gulp.watch('src/**/*.ts', ['build:ts']);
+});
+
 gulp.task('helloandcopy', ['hello', 'copy']);

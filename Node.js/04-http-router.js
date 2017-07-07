@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
             }]));
             break;
         case '/redirect':
-            res.statusCode = 301;
+            res.statusCode = 302;
             res.setHeader('Location', 'http://www.google.fr/');
             break;
         default:

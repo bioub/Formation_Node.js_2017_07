@@ -2,21 +2,23 @@ const Router = require('express').Router;
 const router = new Router();
 const authorize = require('../middlewares/authorize');
 const bodyParser = require('body-parser');
+const Contact = require('../models/contact');
 
-const contacts = [{
-  prenom: 'Steve',
-  nom: 'Jobs',
-  id: 123,
-}, {
-  prenom: 'Bill',
-  nom: 'Gates',
-  id: 456,
-}];
+// Exercice :
+// Implémenter les URL Show, Add, Delete avec Mongoose
+// les méthodes à utiliser :
+// Contact.create
+// Contact.findById
+// Contact.findByIdAndRemove
 
 // API Restful (URLs conventionnées)
 // List
 router.get('/', (req, res) => {
-  res.json(contacts);
+  Contact.find({}, 'prenom nom')
+    .then((contacts) => {
+      res.json(contacts);
+    })
+    .catch((err) => {});
 });
 
 // Add
